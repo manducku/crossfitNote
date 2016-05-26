@@ -1,3 +1,15 @@
 */node_modules/*
 */assets/bundles/*
+__pycache__/
+
+# db 
+db.sqlite3
+
+
+# swap file
+*.swo
 *.swp
+
+#log 
+webpack-stats.json
+*.log

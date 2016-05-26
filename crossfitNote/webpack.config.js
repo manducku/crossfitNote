@@ -5,26 +5,31 @@ var BundleTracker = require('webpack-bundle-tracker')
 module.exports = {  
         context: __dirname,
 
-      entry: './assets/js/index', // webpack의 시작 포인트. Root Component 경로를 입력
-
-      output: {
+        entry: [
+        'webpack-dev-server/client?http://localhost:3000',
+        'webpack/hot/only-dev-server',
+        './assets/js/index', // webpack의 시작 포인트. Root Component 경로를 입력
+       ],
+        output: {
           path: path.resolve('./assets/bundles/'),
           filename: "[name]-[hash].js",
-      }, 
+          publicPath: 'http://localhost:3000/assets/bundles/',
+        }, 
 
-      plugins: [
-        new BundleTracker({filename: './webpack-stats.json'}),
-      ],
-
-      module: {
-        loaders: [
-          { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel?presets[]=es2015&presets[]=react'}, 
-          // 모든 jsx 파일을 js 파일로 babel을 통해 컴파일합니다
+        plugins: [
+            new webpack.HotModuleReplacementPlugin(),
+            new webpack.NoErrorsPlugin(),
+            new BundleTracker({filename: './webpack-stats.json'}),
         ],
-      },
 
-      resolve: {
-        modulesDirectories: ['node_modules', 'bower_components'],
-        extensions: ['', '.js', '.jsx']
-      },
+        module: {
+            loaders: [
+              { test: /\.jsx?$/, exclude: /node_modules/, loaders:['react-hot', 'babel?presets[]=es2015&presets[]=react']}, 
+            ],
+        },
+
+        resolve: {
+            modulesDirectories: ['node_modules', 'bower_components'],
+            extensions: ['', '.js', '.jsx']
+        },
     }
